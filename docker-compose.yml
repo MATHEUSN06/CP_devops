@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+
+    container_name: db_matheus_RM123456 
+    restart: always
+
+    environment:
+      POSTGRES_DB: eco_db
+      POSTGRES_USER: matheus_admin
+      POSTGRES_PASSWORD: fiap_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - cp2devops:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - eco_network
+
+  app:
+    build: .
+    
+    container_name: app_matheus_RM123456
+    restart: always
+ 
+    ports:
+      - "5000:5000"
+    environment:
+      DB_URL: "postgresql://matheus_admin:fiap_password@db:5432/eco_db"
+    depends_on:
+      - db
+    networks:
+      - eco_network
+
+
+networks:
+  eco_network:
+    driver: bridge
+
+volumes:
+  cp2devops:

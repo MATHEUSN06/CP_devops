@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Eco-Awareness 2026 | Gestão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="card">
+        <span class="badge">CP2 - DevOps & Database</span>
+        <h1>Eco-Awareness 2026</h1>
+        <p>Painel de Gestão de Ativistas e Cashback</p>
+
+        <div class="crud-panel">
+            <strong>Novo Ativista (Create)</strong>
+            <div class="crud-form">
+                <input type="text" id="novoNome" placeholder="Nome">
+                <input type="email" id="novoEmail" placeholder="Email">
+                <select id="novaPrioridade">
+                    <option value="1">Alta Prioridade</option>
+                    <option value="2">Média Prioridade</option>
+                    <option value="3" selected>Baixa Prioridade</option>
+                </select>
+                <button class="btn-add" onclick="criarUsuario()">Salvar</button>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="btnDistribuir" onclick="distribuir()">Distribuir Cashback</button>
+            <button id="btnReset" onclick="resetar()" class="secondary-button">Resetar Sistema</button>
+        </div>
+
+        <div class="status-container">
+            <h3>Participantes Confirmados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Saldo</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-usuarios"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        
+        function carregarUsuarios() {
+            fetch('/usuarios')
+                .then(res => res.json())
+                .then(data => {
+                    const corpo = document.getElementById('tabela-usuarios');
+                    corpo.innerHTML = ''; 
+                    data.forEach(u => {
+                        corpo.innerHTML += `
+                            <tr>
+                                <td class="td-id">#${u.id}</td>
+                                <td class="td-nome">${u.nome}</td>
+                                <td style="font-size:10px; font-weight:bold; color:${u.tipo==='VIP'?'#ff0066':'#888'}">${u.tipo}</td>
+                                <td class="td-saldo">R$ ${u.saldo.toFixed(2)}</td>
+                                <td>
+                                    <button class="btn-delete" onclick="deletarUsuario(${u.id})" title="Remover">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+
+        
+        function criarUsuario() {
+            const nome = document.getElementById('novoNome').value;
+            const email = document.getElementById('novoEmail').value;
+            const prioridade = document.getElementById('novaPrioridade').value;
+            
+            if(!nome || !email) return alert("Por favor, preencha todos os campos.");
+
+            fetch('/usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, prioridade })
+            }).then(() => { 
+                carregarUsuarios(); 
+                document.getElementById('novoNome').value = '';
+                document.getElementById('novoEmail').value = '';
+            });
+        }
+
+        
+        function deletarUsuario(id) {
+            if(confirm('Deseja realmente remover este ativista?')) {
+                fetch(`/usuarios/${id}`, { method: 'DELETE' })
+                    .then(() => carregarUsuarios());
+            }
+        }
+
+        
+        function distribuir() {
+            const btn = document.getElementById('btnDistribuir');
+            const originalText = btn.innerText;
+            
+            btn.innerText = "PROCESSANDO...";
+            btn.disabled = true;
+
+            fetch('/distribuir', { method: 'POST' })
+                .then(res => {
+                    if (!res.ok) throw new Error('Erro ao processar');
+                    return res.json();
+                })
+                .then(data => {
+                    alert(data.message); 
+                   
+                    carregarUsuarios(); 
+                })
+                .catch(() => alert("Erro: Verifique se existem inscrições confirmadas no banco."))
+                .finally(() => {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                });
+        }
+
+      
+        function resetar() {
+            if(confirm('Isso voltará todos os saldos para R$ 100.00. Continuar?')) {
+                fetch('/resetar', { method: 'POST' })
+                    .then(() => carregarUsuarios());
+            }
+        }
+
+        
+        window.onload = carregarUsuarios;
+    </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+:root {
+    --primary: #00ff88;
+    --secondary: #ff0066;
+    --bg: #0f0f0f;
+    --card-bg: #1a1a1a;
+    --text: #e0e0e0;
+    --input-bg: #252525;
+    --border: #333;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    width: 520px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-left: 5px solid var(--primary);
+}
+
+.badge {
+    background: var(--secondary);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+h1 { margin: 20px 0 5px 0; font-size: 26px; }
+p { color: #666; margin-bottom: 30px; font-size: 14px; }
+
+
+.crud-panel {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border);
+}
+
+.crud-panel strong {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 11px;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.crud-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+.crud-form input, .crud-form select {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    flex: 1;
+    min-width: 120px;
+    font-size: 13px;
+}
+
+.btn-add {
+    background: var(--primary);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+}
+
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.secondary-button {
+    background: transparent !important;
+    border: 1px solid var(--border) !important;
+    color: #555 !important;
+    padding: 12px !important;
+    font-size: 11px;
+}
+
+.secondary-button:hover {
+    color: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+    background: rgba(255, 0, 102, 0.05) !important;
+}
+
+
+.status-container {
+    margin-top: 30px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px; 
+}
+
+h3 { font-size: 12px; color: #444; text-transform: uppercase; margin-bottom: 15px; }
+
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 10px; color: #333; padding-bottom: 10px; }
+td { padding: 12px 0; border-bottom: 1px solid #222; font-size: 13px; }
+
+.td-id { color: #444; width: 40px; }
+.td-saldo { text-align: right; color: var(--primary); font-weight: bold; font-family: monospace; }
+
+.btn-delete {
+    background: none !important;
+    padding: 0 !important;
+    width: auto !important;
+    color: #333;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+.btn-delete:hover {
+    color: var(--secondary);
+    transform: none !important;
+    box-shadow: none !important;
+}
