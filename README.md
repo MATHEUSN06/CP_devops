@@ -31,3 +31,7 @@ Certifique-se de ter o Docker instalado e siga os passos:
    ```bash
    git clone https://github.com/MATHEUSN06/CP_devops.git
    cd Cp2Devops
+
+    docker-compose up --build -d
+
+  Verificação: Indica que o acesso deve ser feito via localhost:5000.
